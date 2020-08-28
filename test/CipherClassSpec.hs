@@ -12,11 +12,11 @@ data Env = Env {cipher :: AES256, iv :: IV AES256}
 spec :: Spec
 spec = before newEnv $ do
   it "encrypt and decrypt ByteString successfully" $ \env -> do
-    let encrypted :: Encrypted ByteString ByteString = encrypt (cipher env) (iv env) ("test" :: ByteString)
+    let encrypted :: Encrypted ByteString ByteString UnicodeException = encrypt (cipher env) (iv env) ("test" :: ByteString)
     let decrypted :: Either UnicodeException ByteString = decrypt (cipher env) (iv env) encrypted
     decrypted `shouldBe` Right ("test" :: ByteString)
   it "encrypt and decrypt Text successfully" $ \env -> do
-    let encrypted :: Encrypted Text ByteString = encrypt (cipher env) (iv env) ("test" :: Text)
+    let encrypted :: Encrypted Text ByteString UnicodeException = encrypt (cipher env) (iv env) ("test" :: Text)
     let decrypted :: Either UnicodeException Text = decrypt (cipher env) (iv env) encrypted
     decrypted `shouldBe` Right ("test" :: Text)
 
