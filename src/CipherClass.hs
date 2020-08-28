@@ -7,8 +7,9 @@
 module CipherClass
   ( Encrypted (..),
     Encryptable (..),
-    CipherM (..),
+    Encryptor (..),
     CryptoFailable (..),
+    BlockCipher,
     AES256,
     IV,
     cipherInit,
@@ -36,7 +37,7 @@ class Encryptable a b e where
   encrypt :: (BlockCipher c) => c -> IV c -> a -> Encrypted a b e
   decrypt :: (BlockCipher c) => c -> IV c -> Encrypted a b e -> Either e a
 
-class CipherM m where
+class Encryptor m where
   encryptM :: (Encryptable a b e) => a -> m (Encrypted a b e)
   decryptM :: (Encryptable a b e) => Encrypted a b e -> m (Either e a)
 

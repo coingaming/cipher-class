@@ -30,6 +30,9 @@ dependencies:
 - text
 # crypto
 - cryptonite
+# tests
+- QuickCheck
+- quickcheck-instances
 
 library:
   source-dirs: src

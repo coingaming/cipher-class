@@ -1,24 +1,43 @@
+{-# LANGUAGE FlexibleContexts #-}
+
 module CipherClassSpec
   ( spec,
   )
 where
 
 import CipherClass
+import qualified Data.ByteString.Lazy as BL
+import qualified Data.Text.Lazy as TL
 import Test.Hspec
+import Test.QuickCheck
+import Test.QuickCheck.Instances ()
 import Universum
 
 data Env = Env {cipher :: AES256, iv :: IV AES256}
 
 spec :: Spec
 spec = before newEnv $ do
-  it "encrypt and decrypt ByteString successfully" $ \env -> do
-    let encrypted :: Encrypted ByteString ByteString UnicodeException = encrypt (cipher env) (iv env) ("test" :: ByteString)
-    let decrypted :: Either UnicodeException ByteString = decrypt (cipher env) (iv env) encrypted
-    decrypted `shouldBe` Right ("test" :: ByteString)
-  it "encrypt and decrypt Text successfully" $ \env -> do
-    let encrypted :: Encrypted Text ByteString UnicodeException = encrypt (cipher env) (iv env) ("test" :: Text)
-    let decrypted :: Either UnicodeException Text = decrypt (cipher env) (iv env) encrypted
-    decrypted `shouldBe` Right ("test" :: Text)
+  it "ByteString" $ \env -> property $ \x ->
+    reCrypt (cipher env) (iv env) x
+      `shouldBe` (Right x :: Either () ByteString)
+  it "BL.ByteString" $ \env -> property $ \x ->
+    reCrypt (cipher env) (iv env) x
+      `shouldBe` (Right x :: Either () BL.ByteString)
+  it "Text" $ \env -> property $ \x ->
+    reCrypt (cipher env) (iv env) x
+      `shouldBe` (Right x :: Either UnicodeException Text)
+  it "TL.Text" $ \env -> property $ \x ->
+    reCrypt (cipher env) (iv env) x
+      `shouldBe` (Right x :: Either UnicodeException TL.Text)
+  where
+    reCrypt ::
+      forall c a e.
+      (BlockCipher c, Encryptable a ByteString e) =>
+      c ->
+      IV c ->
+      a ->
+      Either e a
+    reCrypt c i x = decrypt c i (encrypt c i x :: Encrypted a ByteString e)
 
 newEnv :: IO Env
 newEnv = do
