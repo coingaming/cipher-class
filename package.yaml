@@ -25,6 +25,8 @@ dependencies:
 - universum
 # storage
 - esqueleto
+- persistent
+- persistent-template
 # bytes and text
 - bytestring
 - text
@@ -33,6 +35,7 @@ dependencies:
 # tests
 - QuickCheck
 - quickcheck-instances
+- generic-arbitrary
 
 library:
   source-dirs: src
@@ -57,7 +60,6 @@ library:
   - -Wno-monomorphism-restriction # Don’t warn if the monomorphism restriction is used
   dependencies:
   - hspec
-  - hspec-wai
 
 tests:
   cipher-class-test:
@@ -88,4 +90,3 @@ tests:
     dependencies:
     - cipher-class
     - hspec
-    - hspec-wai

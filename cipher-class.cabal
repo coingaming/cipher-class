@@ -38,8 +38,10 @@ library
     , bytestring
     , cryptonite
     , esqueleto
+    , generic-arbitrary
     , hspec
-    , hspec-wai
+    , persistent
+    , persistent-template
     , quickcheck-instances
     , text
     , universum
@@ -50,6 +52,8 @@ test-suite cipher-class-test
   main-is: Spec.hs
   other-modules:
       CipherClassSpec
+      TestUtil
+      UserSpec
       Paths_cipher_class
   hs-source-dirs:
       test
@@ -62,8 +66,10 @@ test-suite cipher-class-test
     , cipher-class
     , cryptonite
     , esqueleto
+    , generic-arbitrary
     , hspec
-    , hspec-wai
+    , persistent
+    , persistent-template
     , quickcheck-instances
     , text
     , universum
