@@ -1,0 +1,66 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.2.
+--
+-- see: https://github.com/sol/hpack
+
+name:           cipher-class
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/cipher-class#readme>
+homepage:       https://github.com/githubuser/cipher-class#readme
+bug-reports:    https://github.com/githubuser/cipher-class/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2020 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/cipher-class
+
+library
+  exposed-modules:
+      CipherClass
+  other-modules:
+      Paths_cipher_class
+  hs-source-dirs:
+      src
+  default-extensions: NoImplicitPrelude MultiParamTypeClasses LambdaCase OverloadedStrings ScopedTypeVariables
+  ghc-options: -Weverything -Werror -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe -Wno-missing-local-signatures -Wno-monomorphism-restriction
+  build-depends:
+      base >=4.7 && <5
+    , bytestring
+    , cryptonite
+    , esqueleto
+    , hspec
+    , hspec-wai
+    , text
+    , universum
+  default-language: Haskell2010
+
+test-suite cipher-class-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      CipherClassSpec
+      Paths_cipher_class
+  hs-source-dirs:
+      test
+  default-extensions: NoImplicitPrelude MultiParamTypeClasses LambdaCase OverloadedStrings ScopedTypeVariables
+  ghc-options: -Weverything -Werror -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe -Wno-missing-local-signatures -Wno-monomorphism-restriction -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , bytestring
+    , cipher-class
+    , cryptonite
+    , esqueleto
+    , hspec
+    , hspec-wai
+    , text
+    , universum
+  default-language: Haskell2010
