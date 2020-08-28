@@ -8,7 +8,6 @@ echo "starting nixos container..."
 docker run -it --rm \
   -e DISPLAY=$IP:0 \
   -e NIXPKGS_ALLOW_BROKEN=1 \
-  -e ROBOT_SSH_KEY="$ROBOT_SSH_KEY" \
   -v "$(pwd):/app" \
   -v "nix:/nix" \
   -v "nix-19.09-root:/root" \
@@ -16,9 +15,8 @@ docker run -it --rm \
   ./nix/bootstrap.sh &&
   nix-shell ./nix/shell.nix --pure \
    -I ssh-config-file=/tmp/.ssh/config \
-   --argstr hexOrganization $HEX_ORGANIZATION \
-   --argstr hexApiKey $HEX_API_KEY \
-   --argstr robotSshKey $ROBOT_SSH_KEY \
+   --argstr vimBackground $VIM_BACKGROUND \
+   --argstr vimColorScheme $VIM_COLOR_SCHEME \
    --option sandbox false \
    -v --show-trace
   "

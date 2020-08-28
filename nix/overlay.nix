@@ -1,7 +1,6 @@
 {
-  hexOrganization,
-  hexApiKey,
-  robotSshKey
+  vimBackground ? "light",
+  vimColorScheme ? "PaperColor"
 }:
 [
   (self: super:
@@ -11,6 +10,9 @@
       doJailbreak = self.haskell.lib.doJailbreak;
     in
       {
+        haskell-ide = import (
+          fetchTarball "https://github.com/tim2CF/ultimate-haskell-ide/tarball/01f50964156a60957428ce103e238b093861328e"
+        ) {inherit vimBackground vimColorScheme;};
         haskellPackages = super.haskell.packages.ghc865.extend(
           self': super': {
             universum = dontCheck super'.universum;

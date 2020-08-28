@@ -1,16 +1,12 @@
-{
-  pkgs ? null,
-  hexOrganization ? null, # organization account name on hex.pm
-  hexApiKey ? null,       # plain text account API key on hex.pm
-  robotSshKey ? null      # base64-encoded private id_rsa (for private git)
-}:
-let overlays = import ./overlay.nix {
-                 inherit hexOrganization hexApiKey robotSshKey;
-               };
-    localPkgs = import ./nixpkgs.nix;
-    nixpkgs = if pkgs == null then import localPkgs {inherit overlays;} else pkgs;
+let nixpkgs = import ./nixpkgs.nix;
 in
-with nixpkgs;
+{
+  pkgs ? import nixpkgs {
+    overlays = import ./overlay.nix {
+    };
+  },
+}:
+with pkgs;
 
 let callPackage = lib.callPackageWith haskellPackages;
     pkg = callPackage ./pkg.nix {inherit stdenv;};
@@ -26,11 +22,12 @@ in
       if drv ? "testSystemDepends"
       then drv.testSystemDepends ++ testDeps
       else testDeps;
-    isExecutable = true;
+    isExecutable = false;
     enableSharedExecutables = false;
     enableLibraryProfiling = false;
-    isLibrary = false;
+    isLibrary = true;
     doHaddock = false;
+    prePatch = "hpack --force";
     preCheck = ''
       source ./nix/export-test-envs.sh;
       sh ./nix/reset-test-data.sh;
@@ -38,10 +35,5 @@ in
     '';
     postCheck = ''
       sh ./nix/shutdown-test-deps.sh
-    '';
-    postFixup = "rm -rf $out/lib $out/nix-support $out/share/doc";
-    postInstall = ''
-      wrapProgram "$out/bin/cipher-class-exe" \
-        --set SYSTEM_CERTIFICATE_PATH "${cacert}/etc/ssl/certs"
     '';
   })

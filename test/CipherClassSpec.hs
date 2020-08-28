@@ -17,6 +17,9 @@ data Env = Env {cipher :: AES256, iv :: IV AES256}
 
 spec :: Spec
 spec = before newEnv $ do
+  --
+  -- TODO : Traversable and Persistent properties
+  --
   it "ByteString" $ \env -> property $ \x ->
     reCrypt (cipher env) (iv env) x
       `shouldBe` (Right x :: Either () ByteString)

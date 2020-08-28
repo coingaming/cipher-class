@@ -27,15 +27,9 @@ jobs:
     - checkout
     - setup_remote_docker
     - *release
-    - run:
-        name: Load docker image
-        command: docker load -i result
-    - run:
-        name: Login docker
-        command: echo -e "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
-    - run:
-        name: Push docker image
-        command: docker push "$(docker images coingaming/cipher-class --format "{{.Repository}}:{{.Tag}}")"
+    #
+    # TODO : hackage publish???
+    #
 
 workflows:
   version: 2
