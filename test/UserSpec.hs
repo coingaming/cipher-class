@@ -23,10 +23,10 @@ import Test.Hspec
 import Test.QuickCheck
 import Test.QuickCheck.Arbitrary.Generic
 import Test.QuickCheck.Instances ()
-import TestUtil
+import TestEnv
 import Universum
 
-data User = User {login :: Login, password :: Password}
+data User = User {login :: Login, address :: Address}
   deriving (Eq, Generic, Show)
 
 instance Arbitrary User where
@@ -38,16 +38,16 @@ share
   [persistLowerCase|
     UserStorage
       login Login
-      password (Encrypted Password ByteString UnicodeException)
+      address (Encrypted Address ByteString UnicodeException)
       UniqueUserStorage login
   |]
 
 instance Encryptable User UserStorage UnicodeException where
-  encrypt c i x = Encrypted $ UserStorage (login x) $ encrypt c i (password x)
+  encrypt c i x = Encrypted $ UserStorage (login x) $ encrypt c i (address x)
   decrypt c i x0 = do
     let x = coerce x0
-    pwd <- decrypt c i $ userStoragePassword x
-    return $ User (userStorageLogin x) pwd
+    a <- decrypt c i $ userStorageAddress x
+    return $ User (userStorageLogin x) a
 
 spec :: Spec
 spec = before newEnv

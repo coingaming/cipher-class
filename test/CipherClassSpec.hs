@@ -8,7 +8,7 @@ import qualified Data.Text.Lazy as TL
 import Test.Hspec
 import Test.QuickCheck
 import Test.QuickCheck.Instances ()
-import TestUtil
+import TestEnv
 import Universum
 
 spec :: Spec

@@ -2,12 +2,12 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module TestUtil
+module TestEnv
   ( Env (..),
     newEnv,
     reCryptBS,
     Login (..),
-    Password (..),
+    Address (..),
   )
 where
 
@@ -47,15 +47,15 @@ reCryptBS env x =
 
 newtype Login
   = Login Text
-  deriving newtype (PersistField, PersistFieldSql, Show, Eq, Arbitrary)
+  deriving newtype (Eq, Arbitrary, Show, PersistField, PersistFieldSql)
 
-newtype Password
-  = Password Text
-  deriving newtype (PersistField, PersistFieldSql, Eq, Arbitrary)
+newtype Address
+  = Address Text
+  deriving newtype (Eq, Arbitrary)
 
-instance Show Password where
+instance Show Address where
   show = const "SECRET"
 
-instance Encryptable Password ByteString UnicodeException where
+instance Encryptable Address ByteString UnicodeException where
   encrypt c i x = reType $ encrypt c i (coerce x :: Text)
-  decrypt c i = second Password . decrypt c i . reType
+  decrypt c i = second Address . decrypt c i . reType

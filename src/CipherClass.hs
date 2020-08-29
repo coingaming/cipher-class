@@ -4,6 +4,42 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
+-- | Data encryption is common security-related practice in
+-- database usage. One of the negative side effects of encryption is
+-- that typed data in its encrypted form becames untyped and
+-- usually exists in form of 'ByteString' or similar blind type.
+-- Operating with untyped data is very error-prone and should be avoided.
+-- This library proposes the way to fix it.
+--
+-- Let's have an example of 'User' sum type where his 'Login'
+-- is not sensitive type, but 'Address' is sensitive.
+-- It should never be shown and should be stored only in
+-- encrypted form.
+--
+-- @
+-- newtype Login
+--   = Login Text
+--   deriving newtype (Eq, Arbitrary, Show, PersistField, PersistFieldSql)
+--
+-- newtype Address
+--   = Address Text
+--   deriving newtype (Eq, Arbitrary)
+--
+-- instance Show Address where
+--   show = const \"SECRET\"
+-- @
+--
+-- Now let's implement 'Encryptable' class for 'Address' type -
+-- we will store it as encrypted 'ByteString'.
+-- After decryption 'UnicodeException' can be raised because
+-- 'Address' is newtype around 'Text' - we will express it
+-- in implementation as well.
+--
+-- @
+-- instance Encryptable Address ByteString UnicodeException where
+--   encrypt c i x = reType $ encrypt c i (coerce x :: Text)
+--   decrypt c i = second Address . decrypt c i . reType
+-- @
 module CipherClass
   ( -- * Type
     Encrypted (..),

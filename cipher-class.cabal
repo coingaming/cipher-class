@@ -1,8 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.2.
+-- This file has been generated from package.yaml by hpack version 0.33.0.
 --
 -- see: https://github.com/sol/hpack
+--
+-- hash: e9709541c71a55acdd8064a9f90e33eef0e212e2d2135e64665cd720eb949c9f
 
 name:           cipher-class
 version:        0.1.0.0
@@ -52,7 +54,7 @@ test-suite cipher-class-test
   main-is: Spec.hs
   other-modules:
       CipherClassSpec
-      TestUtil
+      TestEnv
       UserSpec
       Paths_cipher_class
   hs-source-dirs:
