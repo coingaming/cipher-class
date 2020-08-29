@@ -1,23 +1,21 @@
 name:                cipher-class
-version:             0.1.0.0
-github:              "githubuser/cipher-class"
+version:             0.1
+github:              "coingaming/cipher-class"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2020 Author name here"
+author:              "Ilja Tkachuk <tkachuk.labs@gmail.com>"
+maintainer:          "Ilja Tkachuk <tkachuk.labs@gmail.com>"
+copyright:           "2020 Coingaming <hello@coingaming.io>"
+synopsis:            Typed encryption with persistent support
+category:            Cryptography, Database, Yesod
 
 extra-source-files:
 - README.md
 - ChangeLog.md
 
-# Metadata used when publishing your package
-# synopsis:            Short description of your package
-# category:            Web
-
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/cipher-class#readme>
+description:         Please see the README on GitHub at <https://github.com/coingaming/cipher-class#readme>
 
 dependencies:
 # foundation
