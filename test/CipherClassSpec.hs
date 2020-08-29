@@ -19,12 +19,12 @@ spec = before newEnv $ do
   it "ByteString/ByteString" $ \env -> property $ \x ->
     reCryptBS env x
       `shouldBe` (Right x :: Either () ByteString)
-  it "BL.ByteString/ByteString" $ \env -> property $ \x ->
+  it "ByteString/BL.ByteString" $ \env -> property $ \x ->
     reCryptBS env x
       `shouldBe` (Right x :: Either () BL.ByteString)
-  it "Text/ByteString" $ \env -> property $ \x ->
+  it "ByteString/Text" $ \env -> property $ \x ->
     reCryptBS env x
       `shouldBe` (Right x :: Either UnicodeException Text)
-  it "TL.Text/ByteString" $ \env -> property $ \x ->
+  it "ByteString/TL.Text" $ \env -> property $ \x ->
     reCryptBS env x
       `shouldBe` (Right x :: Either UnicodeException TL.Text)

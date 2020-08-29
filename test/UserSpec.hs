@@ -38,11 +38,11 @@ share
   [persistLowerCase|
     UserStorage
       login Login
-      address (Encrypted Address ByteString UnicodeException)
+      address (Encrypted ByteString UnicodeException Address)
       UniqueUserStorage login
   |]
 
-instance Encryptable User UserStorage UnicodeException where
+instance Encryptable UserStorage UnicodeException User where
   encrypt c i x = Encrypted $ UserStorage (login x) $ encrypt c i (address x)
   decrypt c i x0 = do
     let x = coerce x0
@@ -51,9 +51,9 @@ instance Encryptable User UserStorage UnicodeException where
 
 spec :: Spec
 spec = before newEnv
-  $ it "User/UserStorage"
+  $ it "UserStorage/User"
   $ \env -> property $ \x -> do
     let c = cipher env
     let i = iv env
-    decrypt c i (encrypt c i x :: Encrypted User UserStorage UnicodeException)
+    decrypt c i (encrypt c i x :: Encrypted UserStorage UnicodeException User)
       `shouldBe` Right x

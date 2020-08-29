@@ -12,7 +12,6 @@ module TestEnv
 where
 
 import CipherClass
-import Data.Coerce (coerce)
 import Database.Esqueleto (PersistField, PersistFieldSql)
 import Test.QuickCheck
 import Test.QuickCheck.Instances ()
@@ -35,12 +34,12 @@ newEnv = do
 
 reCryptBS ::
   forall a e.
-  (Encryptable a ByteString e) =>
+  (Encryptable ByteString e a) =>
   Env ->
   a ->
   Either e a
 reCryptBS env x =
-  decrypt c i (encrypt c i x :: Encrypted a ByteString e)
+  decrypt c i (encrypt c i x :: Encrypted ByteString e a)
   where
     c = cipher env
     i = iv env
@@ -51,11 +50,7 @@ newtype Login
 
 newtype Address
   = Address Text
-  deriving newtype (Eq, Arbitrary)
+  deriving newtype (Eq, Arbitrary, Encryptable ByteString UnicodeException)
 
 instance Show Address where
   show = const "SECRET"
-
-instance Encryptable Address ByteString UnicodeException where
-  encrypt c i x = reType $ encrypt c i (coerce x :: Text)
-  decrypt c i = second Address . decrypt c i . reType
