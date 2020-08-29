@@ -13,7 +13,7 @@
 --
 -- Let's have an example of 'User' sum type where his 'Login'
 -- is not sensitive type, but 'Address' is sensitive.
--- It should never be shown and should be stored only in
+-- 'Address' should never be shown and should be stored only in
 -- encrypted form.
 --
 -- @
@@ -23,22 +23,69 @@
 --
 -- newtype Address
 --   = Address Text
---   deriving newtype (Eq, Arbitrary)
+--   deriving newtype (Eq, Arbitrary, Encryptable ByteString UnicodeException)
 --
 -- instance Show Address where
 --   show = const \"SECRET\"
+--
+-- data User = User {login :: Login, address :: Address}
+--   deriving (Eq, Generic, Show)
+--
+-- instance Arbitrary User where
+--   arbitrary = genericArbitrary
+--   shrink = genericShrink
 -- @
 --
--- Now let's implement 'Encryptable' class for 'Address' type -
--- we will store it as encrypted 'ByteString'.
--- After decryption 'UnicodeException' can be raised because
--- 'Address' is newtype around 'Text' - we will express it
--- in implementation as well.
+-- Note how easy we derived @Encryptable ByteString UnicodeException@ class
+-- instance for 'Address' type. 'Address' is newtype around 'Text' which already
+-- have this instance - so we just got it for free. @GeneralizedNewtypeDeriving@
+-- is a very powerful tool, indeed. Having this instance means that now we can
+-- encrypt 'Address' to 'ByteString' form and decrypt back with possible
+-- 'UnicodeException' error (because not every encrypted 'ByteString' represents
+-- valid 'Address').
+--
+-- Now let's define 'UserStorage' type, representation of 'User'
+-- stored in database. We will use 'Persistent' library DSL for this.
 --
 -- @
--- instance Encryptable Address ByteString UnicodeException where
---   encrypt c i x = reType $ encrypt c i (coerce x :: Text)
---   decrypt c i = second Address . decrypt c i . reType
+-- share
+--   [mkPersist sqlSettings]
+--   [persistLowerCase|
+--     UserStorage
+--       login Login
+--       address (Encrypted ByteString UnicodeException Address)
+--       UniqueUserStorage login
+--   |]
+-- @
+--
+-- In spite of @address@ database table column type is still just @bytes@,
+-- compiler knows that these bytes in reality are encrypted representation
+-- of value of 'Address' type.
+--
+-- Just for fun let's implement class instance to encrypt 'User' value
+-- into 'UserStorage' value.
+--
+-- @
+-- instance Encryptable UserStorage UnicodeException User where
+--   encrypt c i x = Encrypted $ UserStorage (login x) $ encrypt c i (address x)
+--   decrypt c i x0 = do
+--     let x = coerce x0
+--     a <- decrypt c i $ userStorageAddress x
+--     return $ User (userStorageLogin x) a
+-- @
+--
+-- And then we can test property - 'User' can be encrypted into
+-- 'UserStorage' form and decrypted back.
+--
+-- @
+-- spec :: Spec
+-- spec = before newEnv
+--   $ it "UserStorage/User"
+--   $ \env -> property $ \x -> do
+--     let c = cipher env
+--     let i = iv env
+--     decrypt c i (encrypt c i x :: Encrypted UserStorage UnicodeException User)
+--       `shouldBe` Right x
 -- @
 module CipherClass
   ( -- * Type
