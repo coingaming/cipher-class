@@ -5,16 +5,23 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
 module CipherClass
-  ( Encrypted (..),
+  ( -- * Type
+    Encrypted (..),
+
+    -- * Class
     Encryptable (..),
     Encryptor (..),
+
+    -- * Utility
+    reType,
+
+    -- * Re-export
     CryptoFailable (..),
     BlockCipher,
     AES256,
     IV,
     cipherInit,
     makeIV,
-    reType,
     getRandomBytes,
   )
 where
@@ -30,13 +37,25 @@ import qualified Data.Text.Lazy as TL (Text, fromStrict, toStrict)
 import Database.Esqueleto (PersistField, PersistFieldSql)
 import Universum
 
+-- | Value of this type represents
+-- value of type __a__ (phantom) encrypted in form of
+-- value of type __b__ (non-phantom) which can cause
+-- error of type __e__ (phantom) when construction of
+-- value of type __a__ fails after decryption.
 newtype Encrypted a b e = Encrypted b
   deriving (PersistField, PersistFieldSql)
 
+-- | Class represents the idea of
+-- typed symmetric encryption and decryption
 class Encryptable a b e where
   encrypt :: (BlockCipher c) => c -> IV c -> a -> Encrypted a b e
   decrypt :: (BlockCipher c) => c -> IV c -> Encrypted a b e -> Either e a
 
+-- | Utility helper class represents idea of
+-- 'BlockCipher' and 'IV' (initial vector)
+-- hidden inside __m__ which often is
+-- some sort of "application" monad which implements
+-- 'Encryptor' class. Promotes finally tagless style.
 class Encryptor m where
   encryptM :: (Encryptable a b e) => a -> m (Encrypted a b e)
   decryptM :: (Encryptable a b e) => Encrypted a b e -> m (Either e a)
@@ -63,5 +82,9 @@ instance (Traversable f, Encryptable a b e) => Encryptable (f a) (f b) e where
   decrypt c i xs =
     mapM (decrypt c i . Encrypted) (coerce xs :: f b)
 
-reType :: Encrypted b a e -> Encrypted c a e
+-- | Casts original phantom type __a__ of 'Encrypted'
+-- value to some other type __c__. Useful for building
+-- 'Encryptable' instances on top of other already
+-- existing 'Encryptable' instances.
+reType :: Encrypted a b e -> Encrypted c b e
 reType = Encrypted . coerce
