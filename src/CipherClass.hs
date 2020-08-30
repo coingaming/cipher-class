@@ -6,9 +6,9 @@
 
 -- | Data encryption is common security-related practice in
 -- database usage. One of the negative side effects of encryption is
--- that typed data in its encrypted form becames untyped and
+-- that typed data in its encrypted form becomes untyped and
 -- usually exists in form of 'ByteString' or similar blind type.
--- Operating with untyped data is very error-prone and should be avoided.
+-- Operations with untyped data are very error-prone and should be avoided.
 -- This library proposes the way to fix it.
 --
 -- Let's have an example of 'User' sum type where his 'Login'
@@ -42,7 +42,8 @@
 -- is a very powerful tool, indeed. Having this instance means that now we can
 -- encrypt 'Address' to 'ByteString' form and decrypt back with possible
 -- 'UnicodeException' error (because not every encrypted 'ByteString' represents
--- valid 'Address').
+-- valid 'Address'). You can find more details in 'Encrypted', 'Encryptable'
+-- and 'Encryptor' documentation.
 --
 -- Now let's define 'UserStorage' type, representation of 'User'
 -- stored in database. We will use 'Persistent' library DSL for this.
@@ -60,7 +61,7 @@
 --
 -- In spite of @address@ database table column type is still just @bytes@,
 -- compiler knows that these bytes in reality are encrypted representation
--- of value of 'Address' type.
+-- of 'Address' value.
 --
 -- Just for fun let's implement class instance to encrypt 'User' value
 -- into 'UserStorage' value.
@@ -123,8 +124,9 @@ import Universum
 -- | Value of this type represents
 -- value of type __a__ (phantom) encrypted in form of
 -- value of type __b__ (non-phantom) which can cause
--- error of type __e__ (phantom) when construction of
--- value of type __a__ fails after decryption.
+-- error of type __e__ (phantom) in case where
+-- __a__ constructor fails after decryption.
+-- This design promotes usage of smart constructors.
 newtype Encrypted b e a = Encrypted b
   deriving (PersistField, PersistFieldSql)
 
@@ -134,11 +136,11 @@ class Encryptable b e a where
   encrypt :: (BlockCipher c) => c -> IV c -> a -> Encrypted b e a
   decrypt :: (BlockCipher c) => c -> IV c -> Encrypted b e a -> Either e a
 
--- | Utility helper class represents idea of
--- 'BlockCipher' and 'IV' (initial vector)
+-- | Class represents one particular case of 'Encryptable'
+-- where 'BlockCipher' and 'IV' (initial vector) are
 -- hidden inside __m__ which often is
 -- some sort of "application" monad which implements
--- 'Encryptor' class. Promotes finally tagless style.
+-- this 'Encryptor' class. Promotes finally tagless style.
 class Encryptor m where
   encryptM :: (Encryptable b e a) => a -> m (Encrypted b e a)
   decryptM :: (Encryptable b e a) => Encrypted b e a -> m (Either e a)

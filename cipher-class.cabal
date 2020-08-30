@@ -4,12 +4,12 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 38de609711e4c1e841d332faf3f2470efe2677eccec7347071f1d6959d3719a4
+-- hash: 1381d4eee3cbe87970e00db24313b2c1529cd401090917bb29b965d87c2b5b35
 
 name:           cipher-class
 version:        0.1
 synopsis:       Typed encryption with persistent support
-description:    Please see the README on GitHub at <https://github.com/coingaming/cipher-class#readme>
+description:    You can find documentation at <http://hackage.haskell.org/package/cipher-class/docs/CipherClass.html hackage>
 category:       Cryptography, Database, Yesod
 homepage:       https://github.com/coingaming/cipher-class#readme
 bug-reports:    https://github.com/coingaming/cipher-class/issues

@@ -1,3 +1,3 @@
-# Changelog for cipher-class
+# Version 0.1
 
-## Unreleased changes
+- Initial version.
