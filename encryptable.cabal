@@ -4,15 +4,15 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1381d4eee3cbe87970e00db24313b2c1529cd401090917bb29b965d87c2b5b35
+-- hash: 496fc2dd6c32d081d47ba9cda19bfba7b4725845c1acc4c873f95dc3a6ecb77d
 
-name:           cipher-class
+name:           encryptable
 version:        0.1
 synopsis:       Typed encryption with persistent support
-description:    You can find documentation at <http://hackage.haskell.org/package/cipher-class/docs/CipherClass.html hackage>
+description:    You can find documentation at <http://hackage.haskell.org/package/encryptable/docs/Encryptable.html hackage>
 category:       Cryptography, Database, Yesod
-homepage:       https://github.com/coingaming/cipher-class#readme
-bug-reports:    https://github.com/coingaming/cipher-class/issues
+homepage:       https://github.com/coingaming/encryptable#readme
+bug-reports:    https://github.com/coingaming/encryptable/issues
 author:         Ilja Tkachuk <tkachuk.labs@gmail.com>
 maintainer:     Ilja Tkachuk <tkachuk.labs@gmail.com>
 copyright:      2020 Coingaming <hello@coingaming.io>
@@ -25,13 +25,13 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/coingaming/cipher-class
+  location: https://github.com/coingaming/encryptable
 
 library
   exposed-modules:
-      CipherClass
+      Encryptable
   other-modules:
-      Paths_cipher_class
+      Paths_encryptable
   hs-source-dirs:
       src
   default-extensions: NoImplicitPrelude MultiParamTypeClasses LambdaCase OverloadedStrings ScopedTypeVariables
@@ -51,14 +51,14 @@ library
     , universum
   default-language: Haskell2010
 
-test-suite cipher-class-test
+test-suite encryptable-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      CipherClassSpec
+      EncryptableSpec
       TestEnv
       UserSpec
-      Paths_cipher_class
+      Paths_encryptable
   hs-source-dirs:
       test
   default-extensions: NoImplicitPrelude MultiParamTypeClasses LambdaCase OverloadedStrings ScopedTypeVariables
@@ -67,8 +67,8 @@ test-suite cipher-class-test
       QuickCheck
     , base >=4.7 && <5
     , bytestring
-    , cipher-class
     , cryptonite
+    , encryptable
     , esqueleto
     , generic-arbitrary
     , hspec

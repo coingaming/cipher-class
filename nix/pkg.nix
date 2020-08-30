@@ -3,8 +3,8 @@
 , QuickCheck, quickcheck-instances, stdenv, text, universum
 }:
 mkDerivation {
-  pname = "cipher-class";
-  version = "0.1.0.0";
+  pname = "encryptable";
+  version = "0.1";
   src = ./..;
   libraryHaskellDepends = [
     base bytestring cryptonite esqueleto generic-arbitrary hspec
@@ -18,6 +18,7 @@ mkDerivation {
     universum
   ];
   prePatch = "hpack";
-  homepage = "https://github.com/githubuser/cipher-class#readme";
+  homepage = "https://github.com/coingaming/encryptable#readme";
+  description = "Typed encryption with persistent support";
   license = stdenv.lib.licenses.bsd3;
 }

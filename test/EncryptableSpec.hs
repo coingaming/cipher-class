@@ -1,4 +1,4 @@
-module CipherClassSpec
+module EncryptableSpec
   ( spec,
   )
 where

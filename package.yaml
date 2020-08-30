@@ -1,13 +1,13 @@
-name:                cipher-class
+name:                encryptable
 version:             0.1
-github:              "coingaming/cipher-class"
+github:              "coingaming/encryptable"
 license:             BSD3
 author:              "Ilja Tkachuk <tkachuk.labs@gmail.com>"
 maintainer:          "Ilja Tkachuk <tkachuk.labs@gmail.com>"
 copyright:           "2020 Coingaming <hello@coingaming.io>"
 synopsis:            Typed encryption with persistent support
 category:            Cryptography, Database, Yesod
-description:         You can find documentation at <http://hackage.haskell.org/package/cipher-class/docs/CipherClass.html hackage>
+description:         You can find documentation at <http://hackage.haskell.org/package/encryptable/docs/Encryptable.html hackage>
 
 extra-source-files:
 - README.md
@@ -56,7 +56,7 @@ library:
   - hspec
 
 tests:
-  cipher-class-test:
+  encryptable-test:
     main:                Spec.hs
     source-dirs:         test
     default-extensions:
@@ -82,5 +82,5 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - cipher-class
+    - encryptable
     - hspec

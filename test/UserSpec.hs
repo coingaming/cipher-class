@@ -16,9 +16,9 @@ module UserSpec
   )
 where
 
-import CipherClass
 import Data.Coerce (coerce)
 import Database.Persist.TH
+import Encryptable
 import Test.Hspec
 import Test.QuickCheck
 import Test.QuickCheck.Arbitrary.Generic

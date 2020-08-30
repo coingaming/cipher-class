@@ -88,7 +88,7 @@
 --     decrypt c i (encrypt c i x :: Encrypted UserStorage UnicodeException User)
 --       `shouldBe` Right x
 -- @
-module CipherClass
+module Encryptable
   ( -- * Type
     Encrypted (..),
 
