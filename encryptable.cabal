@@ -3,13 +3,11 @@ cabal-version: 1.12
 -- This file has been generated from package.yaml by hpack version 0.34.2.
 --
 -- see: https://github.com/sol/hpack
---
--- hash: 089fe3b5758c52bbdada44849cb5b87f55b636edc9995c1c4a4d6657f07b5cee
 
 name:           encryptable
 version:        0.1
 synopsis:       Typed encryption with persistent support
-description:    You can find documentation at <http://hackage.haskell.org/package/encryptable/docs/Encryptable.html hackage>
+description:    You can find documentation at <http://hackage.haskell.org/package/encryptable/docs/Data-Encryptable.html hackage>
 category:       Cryptography, Database, Yesod
 homepage:       https://github.com/coingaming/encryptable#readme
 bug-reports:    https://github.com/coingaming/encryptable/issues
@@ -29,13 +27,13 @@ source-repository head
 
 library
   exposed-modules:
-      Encryptable
+      Data.Encryptable
   other-modules:
       Paths_encryptable
   hs-source-dirs:
       src
   default-extensions: NoImplicitPrelude MultiParamTypeClasses LambdaCase OverloadedStrings ScopedTypeVariables
-  ghc-options: -Weverything -Werror -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe -Wno-missing-local-signatures -Wno-monomorphism-restriction
+  ghc-options: -Weverything -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe -Wno-missing-local-signatures -Wno-monomorphism-restriction
   build-depends:
       QuickCheck >=2.13.2 && <2.14
     , base >=4.7 && <5
@@ -62,7 +60,7 @@ test-suite encryptable-test
   hs-source-dirs:
       test
   default-extensions: NoImplicitPrelude MultiParamTypeClasses LambdaCase OverloadedStrings ScopedTypeVariables
-  ghc-options: -Weverything -Werror -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe -Wno-missing-local-signatures -Wno-monomorphism-restriction -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Weverything -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe -Wno-missing-local-signatures -Wno-monomorphism-restriction -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck >=2.13.2 && <2.14
     , base >=4.7 && <5

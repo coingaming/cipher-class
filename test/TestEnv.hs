@@ -11,8 +11,8 @@ module TestEnv
   )
 where
 
+import Data.Encryptable
 import Database.Esqueleto (PersistField, PersistFieldSql)
-import Encryptable
 import Test.QuickCheck
 import Test.QuickCheck.Instances ()
 import Universum

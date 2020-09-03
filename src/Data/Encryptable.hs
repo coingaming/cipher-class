@@ -11,9 +11,9 @@
 -- Operations with untyped data are very error-prone and should be avoided.
 -- This library proposes the way to fix it.
 --
--- Let's have an example of 'User' sum type where his 'Login'
--- is not sensitive type, but 'Address' is sensitive.
--- 'Address' should never be shown and should be stored only in
+-- Let's have an example of @User@ sum type where his @Login@
+-- is not sensitive type, but @Address@ is sensitive.
+-- @Address@ should never be shown and should be stored only in
 -- encrypted form.
 --
 -- @
@@ -37,16 +37,16 @@
 -- @
 --
 -- Note how easy we derived @Encryptable ByteString UnicodeException@ class
--- instance for 'Address' type. 'Address' is newtype around 'Text' which already
+-- instance for @Address@ type. @Address@ is newtype around 'Text' which already
 -- have this instance - so we just got it for free. @GeneralizedNewtypeDeriving@
 -- is a very powerful tool, indeed. Having this instance means that now we can
--- encrypt 'Address' to 'ByteString' form and decrypt back with possible
+-- encrypt @Address@ to 'ByteString' form and decrypt back with possible
 -- 'UnicodeException' error (because not every encrypted 'ByteString' represents
--- valid 'Address'). You can find more details in 'Encrypted', 'Encryptable'
+-- valid @Address@). You can find more details in 'Encrypted', 'Encryptable'
 -- and 'Encryptor' documentation.
 --
--- Now let's define 'UserStorage' type, representation of 'User'
--- stored in database. We will use 'Persistent' library DSL for this.
+-- Now let's define @UserStorage@ type, representation of @User@
+-- stored in database. We will use @Persistent@ library DSL for this.
 --
 -- @
 -- share
@@ -61,10 +61,10 @@
 --
 -- In spite of @address@ database table column type is still just @bytes@,
 -- compiler knows that these bytes in reality are encrypted representation
--- of 'Address' value.
+-- of @Address@ value.
 --
--- Just for fun let's implement class instance to encrypt 'User' value
--- into 'UserStorage' value.
+-- Just for fun let's implement class instance to encrypt @User@ value
+-- into @UserStorage@ value.
 --
 -- @
 -- instance Encryptable UserStorage UnicodeException User where
@@ -75,8 +75,8 @@
 --     return $ User (userStorageLogin x) a
 -- @
 --
--- And then we can test property - 'User' can be encrypted into
--- 'UserStorage' form and decrypted back.
+-- And then we can test property - @User@ can be encrypted into
+-- @UserStorage@ form and decrypted back.
 --
 -- @
 -- spec :: Spec
@@ -86,9 +86,9 @@
 --     let c = cipher env
 --     let i = iv env
 --     decrypt c i (encrypt c i x :: Encrypted UserStorage UnicodeException User)
---       `shouldBe` Right x
+--       \`shouldBe\` Right x
 -- @
-module Encryptable
+module Data.Encryptable
   ( -- * Type
     Encrypted (..),
 
